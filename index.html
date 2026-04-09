@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHANNY | Resume Website</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+:root {
+--bg-deep: #050505;
+--dune-beige: #c2b4a3;
+--ysl-gold: #b59f78;
+--bg-light-dune: #f7f6f4;
+--bg-dune-dark: #1a1714; /* 新增：沙丘深色背景 */
+--text-dark: #333;
+--text-main: #e5e5e5;
+--font-serif: "Didot", serif;
+--font-sans: "Optima", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+height: 100%; background-color: var(--bg-deep); color: var(--text-main);
+font-family: var(--font-sans); overflow: hidden; touch-action: none;
+}
+
+body::after {
+content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noisey_Texture.png');
+opacity: 0.02; pointer-events: none; z-index: 999;
+}
+
+.main-wrapper {
+height: 100vh; width: 100%;
+transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
+will-change: transform;
+}
+
+.section {
+height: 100vh; width: 100%; position: relative;
+overflow: hidden; display: flex; flex-direction: column; align-items: center;
+}
+
+.site-header { position: absolute; top: 40px; width: 100%; text-align: center; letter-spacing: 0.8em; text-transform: uppercase; z-index: 100; }
+.site-header h1 { font-weight: 200; font-size: 0.9rem; color: var(--dune-beige); opacity: 0.6; }
+
+/* --- P1: 作品集 --- */
+#page-works { justify-content: center; }
+.swiper { width: 100%; padding: 50px 0; }
+.swiper-slide { width: 320px; height: 480px; background-color: #111; border: 1px solid rgba(194,180,163,0.1); }
+.swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- P2: ABOUT --- */
+#page-about { background-color: var(--bg-deep); padding: 0 10%; justify-content: space-between; flex-direction: row; position: relative; }
+#particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.about-text-wrapper { flex: 1; z-index: 1; transition: transform 0.6s ease; overflow: visible; }
+.about-text { font-family: var(--font-serif); font-size: 5.5rem; line-height: 1.1; color: var(--text-main); white-space: nowrap; }
+
+.line-hi { display: block; opacity: 0; animation: dropFallIrregular 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.line-name { display: block; margin-top: 10px; }
+.char { display: inline-block; opacity: 0; transform-origin: center; animation: letterRoll 2s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+.name-char { color: var(--ysl-gold); }
+
+@keyframes dropFallIrregular {
+    0% { transform: translate(-80px, -400px) rotate(-15deg); opacity: 0; }
+    50% { transform: translate(15px, 0) rotate(5deg); opacity: 1; }
+    75% { transform: translate(-5px, -15px) rotate(-2deg); }
+    100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+@keyframes letterRoll {
+    0% { transform: translateX(80vw) translateY(var(--ry)) rotate(var(--rot)); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+}
+
+.image-box { width: 380px; height: 520px; border: 1px solid rgba(255,255,255,0.1); perspective: 1000px; z-index: 10; position: relative;}
+.image-box img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- P3: EDUCATION (修改：沙丘深色美學) --- */
+#page-education { background-color: var(--bg-dune-dark); justify-content: center; position: relative; }
+#light-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; transform: translateZ(0); }
+#glass-container-edu {
+width: 90%; max-width: 1300px; padding: 80px;
+/* 調整為深色玻璃質感 */
+background: rgba(30, 27, 24, 0.4); border: 1px solid rgba(181, 159, 120, 0.2);
+backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
+z-index: 10; position: relative; color: var(--text-main);
+}
+.edu-item { margin-bottom: 40px; border-left: 4px solid var(--ysl-gold); padding-left: 50px; text-align: left; }
+.edu-item h4 { font-size: 1.9rem; color: var(--ysl-gold); display: flex; justify-content: space-between; }
+
+/* --- PAGE 4: EXPERIENCE --- */
+#page-experience { background-color: #080808; justify-content: center; }
+.exp-container { display: flex; gap: 40px; padding: 0 5%; width: 100%; align-items: center; justify-content: center; }
+.liquid-glass-card { flex: 1; max-width: 550px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 45px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(35px); transition: 0.8s; position: relative; overflow: hidden; }
+.liquid-glass-card:hover { transform: translateY(-15px); border-color: var(--ysl-gold); }
+.exp-title { font-family: var(--font-serif); font-size: 1.8rem; color: var(--ysl-gold); margin-bottom: 8px; }
+.exp-body { font-size: 1rem; line-height: 1.8; opacity: 0.8; text-align: left; }
+.exp-body li { margin-bottom: 12px; padding-left: 20px; position: relative; list-style: none; }
+.exp-body li::before { content: "•"; position: absolute; left: 0; color: var(--ysl-gold); }
+
+/* --- PAGE 5: AWARDS --- */
+#page-awards {
+background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+url('https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=80&w=2000');
+background-size: cover; background-position: center; justify-content: center;
+}
+#page-awards .site-header { position: absolute; top: 50px; }
+.awards-list { width: 85%; max-width: 1100px; display: flex; flex-direction: column; gap: 10px; z-index: 2; margin-top: 40px;}
+.award-row {
+padding: 25px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+display: flex; justify-content: space-between; align-items: center; transition: 0.6s; cursor: pointer;
+}
+.award-row:hover { border-bottom: 1px solid #fff; padding-left: 25px; background: rgba(255,255,255,0.03); }
+.award-en { font-family: var(--font-serif); font-size: 1.45rem; color: rgba(255,255,255,0.55); transition: 0.4s; letter-spacing: 0.03em; }
+.award-row:hover .award-en { color: #fff; transform: scale(1.01); }
+.award-zh { color: var(--ysl-gold); font-size: 0.85rem; margin-top: 6px; letter-spacing: 0.15em; opacity: 0.8; }
+
+/* --- PAGE 6: SKILLS --- */
+#page-skills { background-color: #0a0a0a; justify-content: center; }
+.skills-container { display: flex; gap: 60px; perspective: 2000px; width: 80%; max-width: 1000px; justify-content: center; align-items: center; margin-top: 50px; }
+.flip-card { width: 400px; height: 500px; cursor: pointer; position: relative; transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+.flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+.flip-card.is-flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 4px; padding: 40px; }
+.skills-card .flip-card-front { background: #151515; border: 1px solid rgba(255,255,255,0.05); }
+.lang-card .flip-card-front { background: #1e1b15; border: 1px solid rgba(181, 159, 120, 0.1); }
+.flip-card-back { background: #1a1a1a; color: white; transform: rotateY(180deg); border: 1px solid var(--ysl-gold); align-items: flex-start; text-align: left; }
+.card-label { font-family: var(--font-serif); font-size: 2.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-main); opacity: 0.8; }
+.card-sub { font-size: 0.8rem; letter-spacing: 0.4em; margin-top: 15px; color: var(--ysl-gold); }
+.click-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; letter-spacing: 0.3em; opacity: 0.6; text-transform: uppercase; color: var(--ysl-gold); }
+.back-title { font-family: var(--font-serif); font-size: 1.2rem; color: var(--ysl-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(181, 159, 120, 0.3); width: 100%; padding-bottom: 10px;}
+.back-list { list-style: none; font-size: 1.1rem; line-height: 2.2; }
+</style>
+</head>
+<body>
+
+<div class="main-wrapper" id="main-wrapper">
+<section class="section" id="page-works">
+<div class="site-header"><h1>Archive / 作品集</h1></div>
+<div class="swiper mySwiper"><div class="swiper-wrapper">
+<div class="swiper-slide"><img src="Channy.index/画册/图1.png"></div>
+<div class="swiper-slide"><img src="Channy.index/画册/图2.png"></div>
+<div class="swiper-slide"><img src="Channy.index/画册/图3.png"></div>
+<div class="swiper-slide"><img src="Channy.index/画册/图4.png"></div>
+<div class="swiper-slide"><img src="Channy.index/画册/图5.png"></div>
+</div></div>
+</section>
+
+<section class="section" id="page-about">
+<canvas id="particle-canvas"></canvas>
+<div class="about-text-wrapper">
+    <h2 class="about-text">
+        <span class="line-hi">Hi,</span>
+        <span class="line-name">
+            <span class="char" style="--ry:-30px; --rot:360deg; animation-delay:0.8s;">I</span>
+            <span class="char" style="--ry:20px; --rot:-400deg; animation-delay:0.9s;">'</span>
+            <span class="char" style="--ry:-10px; --rot:420deg; animation-delay:1.0s;">m</span>
+            <span class="char" style="width:1.5rem; animation:none;"> </span>
+            <span class="char name-char" style="--ry:40px; --rot:-360deg; animation-delay:1.1s;">C</span>
+            <span class="char name-char" style="--ry:-20px; --rot:450deg; animation-delay:1.2s;">h</span>
+            <span class="char name-char" style="--ry:15px; --rot:-390deg; animation-delay:1.3s;">a</span>
+            <span class="char name-char" style="--ry:-25px; --rot:410deg; animation-delay:1.4s;">n</span>
+            <span class="char name-char" style="--ry:30px; --rot:-430deg; animation-delay:1.5s;">n</span>
+            <span class="char name-char" style="--ry:-15px; --rot:370deg; animation-delay:1.6s;">y</span>
+            <span class="char" style="--ry:35px; --rot:-440deg; animation-delay:1.7s;">!</span>
+        </span>
+    </h2>
+</div>
+<div class="about-image-wrapper"><div class="image-box" id="follow-image"><img src="Channy.index/领英照.JPG"></div></div>
+</section>
+
+<section class="section" id="page-education">
+<canvas id="light-canvas"></canvas>
+<div class="site-header"><h1>Education / 教育經歷</h1></div>
+<div id="glass-container-edu">
+<div class="edu-item">
+<h4>嶺南大學 / Lingnan University <span class="date">09/2025 - Present</span></h4>
+<p>MSc in Arts Technology and Business (藝術科技與商業理學碩士)</p>
+<p style="font-size: 0.8rem; opacity: 0.6;">Core: Design Thinking, Art Finance and Technology</p>
+</div>
+<div class="edu-item">
+<h4>廣州商學院 / Guangzhou College of Commerce <span class="date">09/2020 - 06/2024</span></h4>
+<p>Bachelor of Management in Marketing (市場營銷管理學學士)</p>
+<p style="font-size: 0.8rem; opacity: 0.6;">GPA: 84.72/100 | Core: New Media Marketing, Planning</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="page-experience">
+<div class="site-header"><h1>Experience / 工作經歷</h1></div>
+<div class="exp-container">
+<div class="liquid-glass-card">
+<h3 class="exp-title">Sales Assistant</h3>
+<div style="opacity:0.5; margin-bottom:20px;">Yupinhui Cold Chain Logistics | 2024 - 2025</div>
+<div class="exp-body"><ul>
+<li>Responsible for following up on sales orders, drafting contracts, and managing sales documentation.</li>
+<li>Maintained customer relationships and assisted in strategic cooperation plans.</li>
+</ul></div>
+</div>
+<div class="liquid-glass-card">
+<h3 class="exp-title">New Media Operation</h3>
+<div style="opacity:0.5; margin-bottom:20px;">Tanzhilv (Guangzhou) Tourism | 2024</div>
+<div class="exp-body"><ul>
+<li>Managed content planning and daily operations across Rednote, WeChat, and Tiktok.</li>
+<li>Designed company branding, logos, and promotional videos via PS & CapCut.</li>
+</ul></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="page-awards">
+<div class="site-header"><h1>Awards / 榮譽獎項</h1></div>
+<div class="awards-list">
+<div class="award-row"><div><span class="award-en">Champion / "Vitality Cup" 3x3 Basketball</span><br><span style="color:var(--ysl-gold); font-size:0.8rem;">“活力杯”三人女子籃球賽 / 冠軍</span></div><span>2020</span></div>
+<div class="award-row"><div><span class="award-en">Third-class Scholarship</span><br><span style="color:var(--ysl-gold); font-size:0.8rem;">校級三等獎學金</span></div><span>2021</span></div>
+<div class="award-row"><div><span class="award-en">Third Prize / 12th "Innovation, Creativity and Entrepreneurship" Challenge</span><br><span style="color:var(--ysl-gold); font-size:0.8rem;">第12屆“創新、創意和創業”大賽 / 三等獎</span></div><span>2022</span></div>
+<div class="award-row"><div><span class="award-en">First Runner-up / National Third Prize / The 14th National Undergraduate Marketing Competition</span><br><span style="color:var(--ysl-gold); font-size:0.8rem;">第十四屆全國大學生市場行銷大賽</span></div><span>2023</span></div>
+<div class="award-row"><div><span class="award-en">The 17th Sports Festival "Champions Cup" Women's Basketball League of Guangzhou College of Commerce</span><br><span style="color:var(--ysl-gold); font-size:0.8rem;">廣州商學院第十七屆體育節“冠軍盃”籃球女子聯賽 / 亞軍</span></div><span>2024</span></div>
+</div>
+</section>
+
+<section class="section" id="page-skills">
+<div class="site-header"><h1>Skills & Languages / 技能語言</h1></div>
+<div class="skills-container">
+<div class="flip-card skills-card" onclick="this.classList.toggle('is-flipped')">
+<div class="flip-card-inner">
+<div class="flip-card-front"><div class="card-label">Skills</div><div class="card-sub">TECHNICAL EXPERTISE</div><div class="click-hint">Click</div></div>
+<div class="flip-card-back"><h5 class="back-title">SKILLS</h5><ul class="back-list"><li>Gemini / Doubao / Grok</li><li>Figma / Photoshop</li><li>CapCut / Video Editing</li><li>Microsoft Excel / Word / PowerPoint</li><li>Vibe Coding</li></ul></div>
+</div>
+</div>
+<div class="flip-card lang-card" onclick="this.classList.toggle('is-flipped')">
+<div class="flip-card-inner">
+<div class="flip-card-front"><div class="card-label">Languages</div><div class="card-sub">COMMUNICATION</div><div class="click-hint">Click</div></div>
+<div class="flip-card-back"><h5 class="back-title">LANGUAGES</h5><ul class="back-list"><li>Cantonese (Native)</li><li>Mandarin (Native)</li><li>English (Fluent)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+// 1. Swiper
+new Swiper(".mySwiper", { effect: "coverflow", centeredSlides: true, slidesPerView: "auto", loop: true });
+
+// 2. 滾動翻頁
+const wrapper = document.getElementById('main-wrapper');
+let currentStage = 0; let isScrolling = false; let scrollAccumulator = 0;
+window.addEventListener('wheel', (e) => {
+if (isScrolling) return;
+scrollAccumulator += e.deltaY;
+if (scrollAccumulator > 70 && currentStage < 5) performScroll(currentStage + 1);
+else if (scrollAccumulator < -70 && currentStage > 0) performScroll(currentStage - 1);
+}, { passive: false });
+
+function performScroll(index) {
+isScrolling = true; currentStage = index;
+wrapper.style.transform = `translateY(-${index * 100}vh)`;
+scrollAccumulator = 0;
+setTimeout(() => { isScrolling = false; }, 1300);
+}
+
+// 3. P2 照片互動
+const imageWrapper = document.querySelector('.about-image-wrapper');
+const imageBox = document.getElementById('follow-image');
+imageWrapper.addEventListener('mousemove', (e) => {
+const rect = imageWrapper.getBoundingClientRect();
+imageBox.style.transform = `rotateX(${(e.clientY - rect.top - rect.height/2) * -0.05}deg) rotateY(${(e.clientX - rect.left - rect.width/2) * 0.05}deg)`;
+});
+
+// 4. Page 2 粒子
+const pCanvas = document.getElementById('particle-canvas');
+const pCtx = pCanvas.getContext('2d');
+let pArr = [];
+let pMouse = { x: null, y: null, radius: 150 };
+
+class ParticleP2 {
+constructor() {
+this.x = Math.random() * innerWidth; this.y = Math.random() * innerHeight;
+this.baseX = this.x; this.baseY = this.y;
+this.size = Math.random() * 3 + 1; this.density = (Math.random() * 30) + 1;
+}
+draw() {
+pCtx.fillStyle = 'rgba(255,255,255,0.7)';
+pCtx.beginPath(); pCtx.arc(this.x, this.y, this.size, 0, Math.PI*2); pCtx.fill();
+}
+update() {
+let dx = pMouse.x - this.x; let dy = pMouse.y - this.y;
+let distance = Math.sqrt(dx*dx + dy*dy);
+if (distance < pMouse.radius) {
+let force = (pMouse.radius - distance) / pMouse.radius;
+this.x -= (dx/distance) * force * this.density;
+this.y -= (dy/distance) * force * this.density;
+} else {
+this.x -= (this.x - this.baseX) / 10;
+this.y -= (this.y - this.baseY) / 10;
+}
+}
+}
+function initP2() {
+pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight;
+pArr = []; for (let i = 0; i < 150; i++) pArr.push(new ParticleP2());
+}
+
+// 5. Page 3 Waterfall
+const lCanvas = document.getElementById('light-canvas');
+const lCtx = lCanvas.getContext('2d');
+let blobs = [];
+let lMouse = { x: null, y: null, radius: 180 };
+
+class WaterfallParticle {
+constructor() { this.init(); }
+init() {
+this.x = Math.random() * (innerWidth * 0.4) + (innerWidth * 0.6);
+this.y = -50 - Math.random() * 200; this.baseX = this.x;
+this.size = Math.random() * 1.5 + 0.5; this.speedY = Math.random() * 2 + 1;
+this.speedX = -(Math.random() * 2 + 1); this.density = (Math.random() * 25) + 5;
+this.color = Math.random() > 0.5 ? "181, 159, 120" : "100, 150, 255";
+}
+draw() {
+lCtx.fillStyle = `rgba(${this.color}, 0.8)`; // 略微調高亮度
+lCtx.beginPath(); lCtx.arc(this.x, this.y, this.size, 0, Math.PI*2); lCtx.fill();
+}
+update() {
+this.y += this.speedY; this.x += this.speedX;
+let dx = lMouse.x - this.x; let dy = lMouse.y - this.y;
+let distance = Math.sqrt(dx*dx + dy*dy);
+if (distance < lMouse.radius) {
+let force = (lMouse.radius - distance) / lMouse.radius;
+this.x -= (dx/distance) * force * this.density * 1.2;
+this.y -= (dy/distance) * force * this.density * 1.2;
+} else {
+let idealX = Math.max(0, this.baseX - (this.y * 1.1));
+this.x += (idealX - this.x) * 0.01;
+}
+if (this.y > innerHeight || this.x < -100) this.init();
+}
+}
+
+function initBlobs() {
+lCanvas.width = window.innerWidth; lCanvas.height = window.innerHeight;
+blobs = []; for(let i=0; i<500; i++) blobs.push(new WaterfallParticle());
+}
+
+function animateAll() {
+pCtx.clearRect(0,0,innerWidth,innerHeight);
+pArr.forEach(p => { p.update(); p.draw(); });
+
+// P3 背景刷新色改為深沙色
+lCtx.fillStyle = '#1a1714'; 
+lCtx.fillRect(0,0,innerWidth,innerHeight);
+
+blobs.forEach(b => { b.update(); b.draw(); });
+requestAnimationFrame(animateAll);
+}
+
+window.addEventListener('mousemove', (e) => {
+if (currentStage === 1) {
+pMouse.x = e.x; pMouse.y = e.y;
+lMouse.x = null; lMouse.y = null;
+} else if (currentStage === 2) {
+const rect = document.getElementById('page-education').getBoundingClientRect();
+lMouse.x = e.x; lMouse.y = e.y - rect.top;
+pMouse.x = null; pMouse.y = null;
+} else {
+pMouse.x = null; pMouse.y = null;
+lMouse.x = null; lMouse.y = null;
+}
+});
+
+window.addEventListener('resize', () => { initP2(); initBlobs(); });
+initP2(); initBlobs(); animateAll();
+</script>
+</body>
+</html>
