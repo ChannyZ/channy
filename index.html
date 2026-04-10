@@ -11,7 +11,7 @@
 --dune-beige: #c2b4a3;
 --ysl-gold: #b59f78;
 --bg-light-dune: #f7f6f4;
---bg-dune-dark: #1a1714; /* 新增：沙丘深色背景 */
+--bg-dune-dark: #1a1714;
 --text-dark: #333;
 --text-main: #e5e5e5;
 --font-serif: "Didot", serif;
@@ -20,30 +20,54 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* 核心：電腦端鎖定，手機端務必開啟原生滾動 */
 html, body {
-height: 100%; background-color: var(--bg-deep); color: var(--text-main);
-font-family: var(--font-sans); overflow: hidden; touch-action: none;
+    width: 100%;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
 }
+
+/* 電腦端 (寬度 > 768px) */
+@media (min-width: 769px) {
+    html, body { height: 100%; overflow: hidden; }
+    .main-wrapper { height: 100vh; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); will-change: transform; }
+    .section { height: 100vh; }
+}
+
+/* 移動端修復 (寬度 <= 768px) */
+@media (max-width: 768px) {
+    html, body { 
+        height: auto !important; 
+        overflow-y: auto !important; /* 強制開啟上下滑動 */
+        -webkit-overflow-scrolling: touch; /* 讓滑動更流暢 */
+    }
+    .main-wrapper { 
+        transform: none !important; /* 禁用位移邏輯 */
+        height: auto !important; 
+    }
+    .section { 
+        height: auto !important; /* 讓內容自動撐開，不要限制在 100vh */
+        min-height: 80vh; /* 保證每個區塊有足夠空間 */
+        padding: 60px 20px; 
+        overflow: visible !important; /* 允許內容溢出顯示 */
+        display: block !important; /* 避免 flex 居中導致手機端標題被蓋掉 */
+    }
+    .site-header { position: relative !important; top: 0 !important; margin-bottom: 30px; }
+    .about-text { font-size: 3rem !important; white-space: normal !important; }
+    .image-box { width: 100% !important; max-width: 300px; height: 400px !important; margin: 0 auto; }
+}
+
+/* 其他內容樣式保留，僅微調佈局 */
+.main-wrapper { width: 100%; position: relative; }
+.section { width: 100%; position: relative; display: flex; flex-direction: column; align-items: center; }
 
 body::after {
-content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noisey_Texture.png');
-opacity: 0.02; pointer-events: none; z-index: 999;
+    content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noisey_Texture.png');
+    opacity: 0.02; pointer-events: none; z-index: 999;
 }
-
-.main-wrapper {
-height: 100vh; width: 100%;
-transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
-will-change: transform;
-}
-
-.section {
-height: 100vh; width: 100%; position: relative;
-overflow: hidden; display: flex; flex-direction: column; align-items: center;
-}
-
-.site-header { position: absolute; top: 40px; width: 100%; text-align: center; letter-spacing: 0.8em; text-transform: uppercase; z-index: 100; }
-.site-header h1 { font-weight: 200; font-size: 0.9rem; color: var(--dune-beige); opacity: 0.6; }
 
 /* --- P1: 作品集 --- */
 #page-works { justify-content: center; }
@@ -372,6 +396,10 @@ lMouse.x = null; lMouse.y = null;
 
 window.addEventListener('resize', () => { initP2(); initBlobs(); });
 initP2(); initBlobs(); animateAll();
+if (!isMobile) {
+    // 只有在非手機端才運行全屏滾動邏輯
+    window.addEventListener('wheel', (e) => { ... });
+}
 </script>
 </body>
 </html>
